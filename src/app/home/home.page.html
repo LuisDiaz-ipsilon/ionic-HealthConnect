@@ -5,16 +5,29 @@
     </ion-title>
   </ion-toolbar>
 </ion-header>
+<ion-content>
+  <div class="ion-text-center vertical-center">
+    <ion-button (click)="solicitarPermiso()" color="dark">Solicitar permisos</ion-button>
+    <ion-button (click)="cargarDatos()" color="dark">Datos</ion-button>
 
-<ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">Blank</ion-title>
-    </ion-toolbar>
-  </ion-header>
+    <p *ngIf="dataRes">horas dormidas del ultimo dia</p>
+    <p *ngIf="dataRes">{{tiempoDormido}}</p>
 
-  <div id="container">
-    <strong>Ready to create an app?</strong>
-    <p>Start with Ionic <a target="_blank" rel="noopener noreferrer" href="https://ionicframework.com/docs/components">UI Components</a></p>
+    <p *ngIf="dataRes">Heart Rate</p>
+    <p *ngIf="dataRes">{{hr}}</p>
+
+    <p *ngIf="dataRes">Peso</p>
+    <p *ngIf="dataRes">{{peso}}</p>
+
+    <p *ngIf="dataResSteps">Pasos ID</p>
+    <p *ngIf="dataResSteps">{{pasos}}</p>
+
+    <ion-button (click)="validarPermisos()" color="dark">Validar</ion-button>
+    <ion-button (click)="checkPermissions()" color="dark">Revisar permisos</ion-button>
+    <ion-button (click)="openAppSetting()" color="dark">Open Settings</ion-button>
+    <ion-button (click)="writeStepsTest()" color="dark">Escribrir pasos</ion-button>
+
+    
+
   </div>
 </ion-content>

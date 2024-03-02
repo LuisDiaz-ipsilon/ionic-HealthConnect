@@ -1,5 +1,5 @@
-import { HealthConnect, Record } from 'capacitor-health-connect-local'
-import { StoredRecord, RecordType, HealthConnectAvailabilityStatus } from '../interfaces/healthconnect-interfaces';
+import { HealthConnect, Record } from 'capacitor-health-connect-local';
+import { StoredRecord, RecordType, HealthConnectAvailabilityStatus, GetRecordsOptions} from '../interfaces/healthconnect-interfaces';
 
 const recordTypeSteps: RecordType = "Steps";
 const readPermissions: RecordType[] = ["Weight", "Steps"];
@@ -20,12 +20,11 @@ export const requestPermissions = async (): Promise<{ grantedPermissions: string
     }
 }
 
-export const getSteps = async (): Promise<{ record: StoredRecord; }> => {
+export const getSteps = async (recordId: string): Promise<{ record: StoredRecord }> => {
     try {
-
         const options = {
             type: recordTypeSteps,
-            recordId: '1'
+            recordId: recordId
         };
 
         return await HealthConnect.readRecord(options);
@@ -51,7 +50,7 @@ export const writeSteps = async (): Promise<{ recordIds: string[] }> => {
             startZoneOffset: '-06:00',
             endTime: endTime,
             endZoneOffset: '-06:00',
-            count: 123,
+            count: 510,
         }
 
         const records: Record[] = [re1];
@@ -93,5 +92,21 @@ export const openHealthConnectSetting = async (): Promise<void> => {
         return await HealthConnect.openHealthConnectSetting();
     } catch (error) {
         console.log('[openHealthConnectSetting util] error to open settings:', error);
+    }
+}
+
+export const readRecordsSteps = async (options: GetRecordsOptions): Promise<{records: StoredRecord[], pageToken?: string}> => {
+    try {
+        // Construir el objeto options para HealthConnect.readRecords
+        const readRecordsOptions = {
+            type: options.type,
+            timeRangeFilter: options.timeRangeFilter
+        };
+
+        
+        return await HealthConnect.readRecords(readRecordsOptions);
+    } catch (error) {
+        console.log('[HealthConnect util] Error getting records steps:', error);
+        throw error;
     }
 }

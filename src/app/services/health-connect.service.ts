@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import { checkAvailability, checkHealthPermissions, getSteps, openHealthConnectSetting, requestPermissions, writeSteps } from '../utils/healthConnect-util';
-import { StoredRecord } from '../interfaces/healthconnect-interfaces';
+import { checkAvailability, checkHealthPermissions, getSteps, openHealthConnectSetting, requestPermissions, writeSteps, readRecordsSteps } from '../utils/healthConnect-util';
+import { StoredRecord, GetRecordsOptions, Record } from '../interfaces/healthconnect-interfaces';
 
 @Injectable({
   providedIn: 'root'
@@ -15,12 +15,16 @@ export class HealthConnectService {
     console.log("Permisos Android HealthConnect: " + res.grantedPermissions);
   }
 
-  async getSteps(): Promise<{ record: StoredRecord; }> {
-    return await getSteps();
+  async getSteps(recordId: string): Promise<{ record: StoredRecord }> {
+    return await getSteps(recordId);
   }
 
   async writeSteps(): Promise<{recordIds: string[]}> {
     return await writeSteps();
+  }
+
+  async readRecordsSteps(options : GetRecordsOptions): Promise<{records: StoredRecord[], pageToken?: string}> {
+    return await readRecordsSteps(options);
   }
 
   async checkAvailability(): Promise<void> {

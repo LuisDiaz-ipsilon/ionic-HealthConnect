@@ -24,8 +24,8 @@ export class HomePage {
   async cargarDatos(){
     this.recordIdActual = this.editStringId(this.recordIdActual)  
     const res = await this.healthConnectservice.getSteps(this.recordIdActual.toString());
-    this.pasos = (res.record.count!).toString();
-    this.dataRes = true;
+    //this.pasos = (res.record.count!).toString();
+    //this.dataRes = true;
   }
 
   async solicitarPermiso(){
@@ -44,11 +44,15 @@ export class HomePage {
     await this.healthConnectservice.openHealthConnectSetting();
   }
 
-  async writeStepsTest() : Promise<{recordIds: string[]}>{
+  async writeStepsTest() : Promise<void>{
     const res = await this.healthConnectservice.writeSteps();
     console.log(res.recordIds)
     this.recordIdActual = res.recordIds.toString();
-    return res
+  }
+
+  async writeWeight(): Promise<void> {
+    const res = await this.healthConnectservice.writeWeight();
+    console.log(res.recordIds);
   }
 
   async readRecordsSteps() : Promise<void>{
@@ -66,7 +70,17 @@ export class HomePage {
     }
     
     const res = await this.healthConnectservice.readRecordsSteps(options)
-    console.log(res.records[0])
+    if (res && res.records && res.records.length > 0) {
+      let totalSteps = 0;
+  
+      res.records.forEach(record => {
+          totalSteps += record.count!;
+      });
+      this.pasos = totalSteps.toString(); //La suma de pasos desde la ultima media noche hasta medianoche del dia siguiente
+      this.dataRes = true;
+    } else {
+        console.log("No se encontraron registros de pasos.");
+    }
   }
 
   private editStringId(str: String): string {

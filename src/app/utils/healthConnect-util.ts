@@ -1,4 +1,4 @@
-import { HealthConnect, Record } from 'capacitor-health-connect-local';
+import { HealthConnect, Mass, Record } from 'capacitor-health-connect-local';
 import { StoredRecord, RecordType, HealthConnectAvailabilityStatus, GetRecordsOptions} from '../interfaces/healthconnect-interfaces';
 
 const recordTypeSteps: RecordType = "Steps";
@@ -44,7 +44,7 @@ export const writeSteps = async (): Promise<{ recordIds: string[] }> => {
         const startTime = new Date(currentTime.getTime() - twoHours);
         const endTime = new Date();
 
-        const re1: Record = {
+        const record: Record = {
             type: 'Steps',
             startTime: startTime,
             startZoneOffset: '-06:00',
@@ -53,12 +53,34 @@ export const writeSteps = async (): Promise<{ recordIds: string[] }> => {
             count: 510,
         }
 
-        const records: Record[] = [re1];
-
+        const records: Record[] = [record];
         return await HealthConnect.insertRecords({ records: records });
-
     } catch (error) {
-        console.log('[HealthConnect util] Error write data:', error);
+        console.log('[HealthConnect util] Error write data steps:', error);
+        throw error
+    }
+}
+
+export const writeWeight = async (): Promise<{ recordIds: string[] }> => {
+    try {
+        const currentTime = new Date();
+
+        const mass : Mass = {
+            unit: 'kilogram',
+            value: 71,
+        }
+
+        const record : Record = {
+            type: 'Weight',
+            time: currentTime,
+            zoneOffset: '-06:00',
+            weight: mass,
+        }
+
+        const records : Record[] = [record];
+        return await HealthConnect.insertRecords({ records: records });
+    } catch (error) {
+        console.log('[HealthConnect util] Error write data weitght:', error);
         throw error
     }
 }
@@ -103,7 +125,6 @@ export const readRecordsSteps = async (options: GetRecordsOptions): Promise<{rec
             timeRangeFilter: options.timeRangeFilter
         };
 
-        
         return await HealthConnect.readRecords(readRecordsOptions);
     } catch (error) {
         console.log('[HealthConnect util] Error getting records steps:', error);

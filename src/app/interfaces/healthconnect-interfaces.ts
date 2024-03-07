@@ -13,6 +13,9 @@ export type Record = {
     count: number,
     weight?: Mass,
     samples?: sample[];
+    stages?: Stage[],
+    title?: String,
+    notes?: String,
 } | {
     type: 'HeartRate';
     startTime: Date;
@@ -22,6 +25,9 @@ export type Record = {
     samples: sample[];
     count?: number,
     weight?: Mass,
+    stages?: Stage[],
+    title?: String,
+    notes?: String,
 } | {
     type: 'HeartRateSeries';
     startTime: Date;
@@ -31,6 +37,22 @@ export type Record = {
     samples: sample[];
     count?: number,
     weight?: Mass,
+    stages?: Stage[],
+    title?: String,
+    notes?: String,
+} | {
+    type: 'SleepSession';
+    startTime: Date,
+    startZoneOffset?: string,
+    endTime: Date,
+    endZoneOffset?: string,
+    title?: String,
+    notes?: String,
+    stages: Stage[],
+    samples: sample[];
+    count?: number,
+    weight?: Mass,
+    
 } | {
     type: 'ActiveCalories';
     startTime: Date;
@@ -40,7 +62,10 @@ export type Record = {
     energy: Energy;
     count?: number,
     weight?: Mass,
-    samples?: sample[];
+    samples?: sample[],
+    stages?: Stage[],
+    title?: String,
+    notes?: String,
 } | {
     type: 'BasalBodyTemperature';
     time: Date;
@@ -52,6 +77,7 @@ export type Record = {
     count?: number,
     weight?: Mass,
     samples?: sample[];
+    stages?: Stage[],
 } | {
     type: 'BasalMetabolicRate';
     time: Date;
@@ -62,6 +88,9 @@ export type Record = {
     samples?: sample[];
     startTime?: Date;
     endTime?: Date;
+    stages?: Stage[],
+    title?: String,
+    notes?: String,
 } | {
     type: 'BloodGlucose';
     time: Date;
@@ -74,7 +103,10 @@ export type Record = {
     weight?: Mass,
     samples?: sample[];
     startTime?: Date;
-    endTime?: Date;
+    endTime?: Date,
+    stages?: Stage[],
+    title?: String,
+    notes?: String,
 } | {
     type: 'BloodPressure';
     time: Date;
@@ -87,26 +119,35 @@ export type Record = {
     weight?: Mass,
     samples?: sample[];
     startTime?: Date;
-    endTime?: Date;
+    endTime?: Date,
+    stages?: Stage[],
+    title?: String,
+    notes?: String,
 } | {
-    type: 'Height';
-    time: Date;
-    zoneOffset?: string;
-    height: Length;
+    type: 'Height',
+    time: Date,
+    zoneOffset?: string,
+    height: Length,
     count?: number,
-    weight?: Mass;
-    samples?: sample[];
-    startTime?: Date;
-    endTime?: Date;
+    weight?: Mass,
+    samples?: sample[],
+    startTime?: Date,
+    endTime?: Date,
+    stages?: Stage[],
+    title?: String,
+    notes?: String,
 } | {
-    type: 'Weight';
-    time: Date;
-    zoneOffset?: string;
-    weight?: Mass;
+    type: 'Weight',
+    time: Date,
+    zoneOffset?: string,
+    weight?: Mass,
     count?: number,
-    samples?: sample[];
-    startTime?: Date;
-    endTime?: Date;
+    samples?: sample[],
+    startTime?: Date,
+    endTime?: Date,
+    stages?: Stage[],
+    title?: String,
+    notes?: String,
 };
 export type RecordMetadata = {
     id: string;
@@ -162,6 +203,11 @@ export type sample = {
     time: Date;
     beatsPerMinute: number;
 };
+export type Stage = {
+    startTime: Date,
+    endTime: Date,
+    stage: 1 | 2 | 3 | 4 | 5 | 6 | 7 | 0
+}
 export type GetRecordsOptions = {
     type: RecordType;
     timeRangeFilter: TimeRangeFilter;

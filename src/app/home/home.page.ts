@@ -14,6 +14,8 @@ export class HomePage {
   protected hr :string = "0"
   protected peso :string = "0"
   protected pasos :string = '0'
+  protected startTime: string = 'sin fecha'
+  protected endTime: string = 'sin fecha'
 
   protected dataRes : boolean = false;
   protected dataResSteps : boolean = false;
@@ -82,6 +84,11 @@ export class HomePage {
       res.records.forEach(record => {
           totalSteps += record.count!;
       });
+
+      const ultimoRegistro : StoredRecord = res.records[res.records.length - 1];
+      this.startTime = ultimoRegistro.startTime!.toString();
+      this.endTime = ultimoRegistro.endTime!.toString();
+
       this.pasos = totalSteps.toString(); //La suma de pasos desde la ultima media noche hasta medianoche del dia siguiente
       this.dataRes = true;
     } else {

@@ -44,6 +44,8 @@ export type Record = {
 } | {
     type: 'BasalBodyTemperature';
     time: Date;
+    startTime?: Date;
+    endTime?: Date;
     zoneOffset?: string;
     temperature: Temperature;
     measurementLocation: 'unknown' | 'armpit' | 'finger' | 'forehead' | 'mouth' | 'rectum' | 'temporal_artery' | 'toe' | 'ear' | 'wrist' | 'vagina';
@@ -58,6 +60,8 @@ export type Record = {
     count?: number,
     weight?: Mass,
     samples?: sample[];
+    startTime?: Date;
+    endTime?: Date;
 } | {
     type: 'BloodGlucose';
     time: Date;
@@ -69,6 +73,8 @@ export type Record = {
     count?: number,
     weight?: Mass,
     samples?: sample[];
+    startTime?: Date;
+    endTime?: Date;
 } | {
     type: 'BloodPressure';
     time: Date;
@@ -80,6 +86,8 @@ export type Record = {
     count?: number,
     weight?: Mass,
     samples?: sample[];
+    startTime?: Date;
+    endTime?: Date;
 } | {
     type: 'Height';
     time: Date;
@@ -88,6 +96,8 @@ export type Record = {
     count?: number,
     weight?: Mass;
     samples?: sample[];
+    startTime?: Date;
+    endTime?: Date;
 } | {
     type: 'Weight';
     time: Date;
@@ -95,6 +105,8 @@ export type Record = {
     weight?: Mass;
     count?: number,
     samples?: sample[];
+    startTime?: Date;
+    endTime?: Date;
 };
 export type RecordMetadata = {
     id: string;

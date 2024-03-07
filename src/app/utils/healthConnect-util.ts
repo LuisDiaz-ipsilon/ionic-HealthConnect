@@ -1,5 +1,5 @@
 import { HealthConnect, Mass, Record } from 'capacitor-health-connect-local';
-import { StoredRecord, RecordType, HealthConnectAvailabilityStatus, GetRecordsOptions} from '../interfaces/healthconnect-interfaces';
+import { StoredRecord, RecordType, HealthConnectAvailabilityStatus, GetRecordsOptions, sample} from '../interfaces/healthconnect-interfaces';
 
 const recordTypeSteps: RecordType = "Steps";
 const readPermissions: RecordType[] = ["Weight", "Steps"];
@@ -85,6 +85,34 @@ export const writeWeight = async (): Promise<{ recordIds: string[] }> => {
     }
 }
 
+export const writeHeartRate = async (): Promise<{ recordIds: string[] }> => {
+    try {
+        const currentTime = new Date();
+
+        const samplesList : sample[] = [
+            {
+                time: currentTime,
+                beatsPerMinute: 128
+            }
+        ]
+
+        const record : Record = {
+            type: 'HeartRate',
+            startTime: currentTime,
+            startZoneOffset: '-06:00',
+            endTime: currentTime,
+            endZoneOffset: '-06:00',
+            samples: samplesList,
+        }
+
+        const records : Record[] = [record];
+        return await HealthConnect.insertRecords({ records: records });
+    } catch (error) {
+        console.log('[HealthConnect util] Error write data HertRate:', error);
+        throw error
+    }
+}
+
 export const checkAvailability = async (): Promise<{ availability: HealthConnectAvailabilityStatus; }> => {
     try {
         return await HealthConnect.checkAvailability();
@@ -117,14 +145,15 @@ export const openHealthConnectSetting = async (): Promise<void> => {
     }
 }
 
-export const readRecordsSteps = async (options: GetRecordsOptions): Promise<{records: StoredRecord[], pageToken?: string}> => {
+export const readRecords = async (options: GetRecordsOptions): Promise<{records: StoredRecord[], pageToken?: string}> => {
     try {
         // Construir el objeto options para HealthConnect.readRecords
         const readRecordsOptions = {
             type: options.type,
             timeRangeFilter: options.timeRangeFilter
         };
-
+        console.log('Test msg')
+        console.log(JSON.stringify(await HealthConnect.readRecords(readRecordsOptions)))
         return await HealthConnect.readRecords(readRecordsOptions);
     } catch (error) {
         console.log('[HealthConnect util] Error getting records steps:', error);

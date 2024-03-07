@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { checkAvailability, checkHealthPermissions, getSteps, openHealthConnectSetting, requestPermissions, writeSteps, readRecordsSteps, writeWeight } from '../utils/healthConnect-util';
+import { checkAvailability, checkHealthPermissions, getSteps, openHealthConnectSetting, requestPermissions, writeSteps, writeWeight, readRecords, writeHeartRate } from '../utils/healthConnect-util';
 import { StoredRecord, GetRecordsOptions, Record } from '../interfaces/healthconnect-interfaces';
 
 @Injectable({
@@ -27,8 +27,12 @@ export class HealthConnectService {
     return await writeWeight();
   }
 
-  async readRecordsSteps(options : GetRecordsOptions): Promise<{records: StoredRecord[], pageToken?: string}> {
-    return await readRecordsSteps(options);
+  async writeHeartRate(): Promise<{recordIds: string[]}> {
+    return await writeHeartRate();
+  }
+
+  async readRecords(options : GetRecordsOptions): Promise<{records: StoredRecord[], pageToken?: string}> {
+    return await readRecords(options);
   }
 
   async checkAvailability(): Promise<void> {

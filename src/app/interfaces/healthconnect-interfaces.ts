@@ -1,5 +1,5 @@
 export type HealthConnectAvailabilityStatus = 'Available' | 'NotInstalled' | 'NotSupported' | 'Installed' | 'Unavailable';
-export type RecordType = 'Height' | 'Weight' | 'Steps' | 'BloodGlucose';
+export type RecordType = 'Height' | 'Weight' | 'Steps' | 'BloodGlucose' | 'HeartRate';
 type RecordBase = {
     metadata: RecordMetadata;
 };
@@ -11,6 +11,26 @@ export type Record = {
     endTime: Date,
     endZoneOffset?: string,
     count: number,
+    weight?: Mass,
+    samples?: sample[];
+} | {
+    type: 'HeartRate';
+    startTime: Date;
+    startZoneOffset?: string;
+    endTime: Date;
+    endZoneOffset?: string;
+    samples: sample[];
+    count?: number,
+    weight?: Mass,
+} | {
+    type: 'HeartRateSeries';
+    startTime: Date;
+    startZoneOffset?: string;
+    endTime: Date;
+    endZoneOffset?: string;
+    samples: sample[];
+    count?: number,
+    weight?: Mass,
 } | {
     type: 'ActiveCalories';
     startTime: Date;
@@ -19,6 +39,8 @@ export type Record = {
     endZoneOffset?: string;
     energy: Energy;
     count?: number,
+    weight?: Mass,
+    samples?: sample[];
 } | {
     type: 'BasalBodyTemperature';
     time: Date;
@@ -26,12 +48,16 @@ export type Record = {
     temperature: Temperature;
     measurementLocation: 'unknown' | 'armpit' | 'finger' | 'forehead' | 'mouth' | 'rectum' | 'temporal_artery' | 'toe' | 'ear' | 'wrist' | 'vagina';
     count?: number,
+    weight?: Mass,
+    samples?: sample[];
 } | {
     type: 'BasalMetabolicRate';
     time: Date;
     zoneOffset?: string;
     basalMetabolicRate: Power;
     count?: number,
+    weight?: Mass,
+    samples?: sample[];
 } | {
     type: 'BloodGlucose';
     time: Date;
@@ -41,6 +67,8 @@ export type Record = {
     mealType: 'unknown' | 'breakfast' | 'lunch' | 'dinner' | 'snack';
     relationToMeal: 'unknown' | 'general' | 'fasting' | 'before_meal' | 'after_meal';
     count?: number,
+    weight?: Mass,
+    samples?: sample[];
 } | {
     type: 'BloodPressure';
     time: Date;
@@ -50,18 +78,23 @@ export type Record = {
     bodyPosition: 'unknown' | 'standing_up' | 'sitting_down' | 'lying_down' | 'reclining';
     measurementLocation: 'unknown' | 'left_wrist' | 'right_wrist' | 'left_upper_arm' | 'right_upper_arm';
     count?: number,
+    weight?: Mass,
+    samples?: sample[];
 } | {
     type: 'Height';
     time: Date;
     zoneOffset?: string;
     height: Length;
     count?: number,
+    weight?: Mass;
+    samples?: sample[];
 } | {
     type: 'Weight';
     time: Date;
     zoneOffset?: string;
-    weight: Mass;
+    weight?: Mass;
     count?: number,
+    samples?: sample[];
 };
 export type RecordMetadata = {
     id: string;
@@ -112,6 +145,10 @@ export type Mass = {
 export type BloodGlucose = {
     unit: 'milligramsPerDeciliter' | 'millimolesPerLiter';
     value: number;
+};
+export type sample = {
+    time: Date;
+    beatsPerMinute: number;
 };
 export type GetRecordsOptions = {
     type: RecordType;

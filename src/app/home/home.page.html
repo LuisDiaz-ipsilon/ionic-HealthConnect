@@ -9,25 +9,20 @@
   <div class="ion-text-center vertical-center">
     <ion-button (click)="solicitarPermiso()" color="dark">Solicitar permisos</ion-button>
     <!--ion-button (click)="cargarDatos()" color="dark">Cargar datos</ion-button-->
-
-    <p *ngIf="dataRes">horas dormidas del ultimo dia</p>
-    <p *ngIf="dataRes">{{tiempoDormido}}</p>
-
-    <p *ngIf="dataRes">Heart Rate</p>
-    <p *ngIf="dataRes">{{hr}}</p>
-
-    <p *ngIf="dataRes">Peso</p>
-    <p *ngIf="dataRes">{{peso}}</p>
-
-    <p *ngIf="dataRes">Pasos del dia actual</p>
-    <p *ngIf="dataRes">{{pasos}}</p>
+    <p *ngIf="dataRes">horas dormidas del ultimo dia {{tiempoDormido}}</p>
+    <p *ngIf="dataRes">Heart Rate {{hr}}</p>
+    <p *ngIf="dataRes">Peso {{peso}}</p>
+    <p *ngIf="dataRes">Pasos del dia actual {{pasos}}</p>
 
     <ion-button (click)="validarPermisos()" color="dark">Validar disponibilidad HC</ion-button>
     <ion-button (click)="checkPermissions()" color="dark">Revisar permisos</ion-button>
     <ion-button (click)="openAppSetting()" color="dark">Open Settings</ion-button>
     <ion-button (click)="writeStepsTest()" color="dark">Escribrir pasos</ion-button>
     <ion-button (click)="writeWeight()" color="dark">Escribir peso</ion-button>
+    <ion-button (click)="writeHeartRate()" color="dark">Escribir Heart Rate</ion-button>
     <ion-button (click)="readRecordsSteps()" color="dark">Obtener datos pasos</ion-button>
+    <ion-button (click)="readRecordsWeight()" color="dark">Obtener datos peso</ion-button>
+    <ion-button (click)="readRecordsHeartRate()" color="dark">Obtener datos Frecuencia Cardiaca</ion-button>
 
     
 

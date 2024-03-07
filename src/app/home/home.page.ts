@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { HealthConnectService } from '../services/health-connect.service';
 import { GetRecordsOptions, Record, StepRecord, StoredRecord } from '../interfaces/healthconnect-interfaces';
+import { RecordType } from 'capacitor-health-connect-local';
 
 @Component({
   selector: 'app-home',
@@ -55,6 +56,11 @@ export class HomePage {
     console.log(res.recordIds);
   }
 
+  async writeHeartRate(): Promise<void> {
+    const res = await this.healthConnectservice.writeHeartRate();
+    console.log(res.recordIds);
+  }
+
   async readRecordsSteps() : Promise<void>{
 
     const today = new Date(); // Obtener la fecha actual
@@ -69,7 +75,7 @@ export class HomePage {
       }
     }
     
-    const res = await this.healthConnectservice.readRecordsSteps(options)
+    const res = await this.healthConnectservice.readRecords(options)
     if (res && res.records && res.records.length > 0) {
       let totalSteps = 0;
   
@@ -80,6 +86,62 @@ export class HomePage {
       this.dataRes = true;
     } else {
         console.log("No se encontraron registros de pasos.");
+    }
+  }
+
+  async readRecordsWeight(): Promise<void> {
+    const current = new Date();
+    const startTime6months = new Date(current);
+    startTime6months.setMonth(startTime6months.getMonth() - 6);
+    const options : GetRecordsOptions = {
+      type: 'Weight',
+      timeRangeFilter: {
+        type: 'between',
+        startTime: startTime6months, //se obtendra todos los datos de pesos desde los ultimos 6 meses
+        endTime: current
+      }
+    }
+
+    const res = await this.healthConnectservice.readRecords(options)
+    if (res && res.records && res.records.length > 0) {
+      const ultimoRegistro : StoredRecord = res.records[res.records.length - 1];
+      
+      if (ultimoRegistro.weight!.value && ultimoRegistro.weight!.value !== undefined) {
+        const ultimoPeso = ultimoRegistro.weight!.value;
+
+        this.peso = ultimoPeso.toString();
+        this.dataRes = true;
+        console.log("Último peso registrado:", ultimoPeso);
+      } else {
+          console.log("No se encontró información de peso en el último registro.");
+      }
+    } else {
+        console.log("No hay registros de peso.");
+    }
+  }
+
+  async readRecordsHeartRate(): Promise<void> {
+    const current = new Date();
+    const startTime6months = new Date(current);
+    startTime6months.setMonth(startTime6months.getMonth() - 6);
+    const options : GetRecordsOptions = {
+      type: 'HeartRateSeries' as RecordType, //Suprime el warning de que HeartRateSeries no es parte de RecordType, pero este se debe a que asi esta declarado en RecordsTypeNameMap.kt por Android.
+      timeRangeFilter: {
+        type: 'between',
+        startTime: startTime6months, //se obtendra todos los datos de pesos desde los ultimos 6 meses
+        endTime: current
+      }
+    }
+
+    const res = await this.healthConnectservice.readRecords(options)
+
+    if (res && res.records && res.records.length > 0) {
+      const ultimoRegistro = res.records[res.records.length - 1];
+      
+      this.hr = ultimoRegistro.samples![0].beatsPerMinute.toString();
+      this.dataRes = true;
+    } else {
+        console.log("No hay registros de HeartRate.");
     }
   }
 

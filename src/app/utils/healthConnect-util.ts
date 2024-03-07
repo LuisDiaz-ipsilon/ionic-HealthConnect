@@ -113,6 +113,67 @@ export const writeHeartRate = async (): Promise<{ recordIds: string[] }> => {
     }
 }
 
+export const writeSleepSession = async (): Promise<{ recordIds: string[] }> => {
+    try {
+        const currentTime = new Date();
+        const sixHoursAgo = new Date(currentTime.getTime() - 6 * 60 * 60 * 1000);
+        const fiveHoursAgo = new Date(currentTime.getTime() - 5 * 60 * 60 * 1000);
+        const fourHoursAgo = new Date(currentTime.getTime() - 4 * 60 * 60 * 1000);
+        const threeHoursAgo = new Date(currentTime.getTime() - 3 * 60 * 60 * 1000);
+        const twoHoursAgo = new Date(currentTime.getTime() - 2 * 60 * 60 * 1000);
+        const oneHoursAgo = new Date(currentTime.getTime() - 1 * 60 * 60 * 1000);
+
+        const recordSleepREM : Record = {
+            type : 'SleepSession',
+            startTime: sixHoursAgo,
+            startZoneOffset: '-06:00',
+            endTime: fiveHoursAgo,
+            endZoneOffset: '-06:00',
+            stages: [
+                {
+                    startTime: sixHoursAgo,
+                    endTime: fiveHoursAgo,
+                    stage: 6 //STAGE_TYPE_REM
+                }
+            ]
+        }
+        const reccordSleeping : Record = {
+            type : 'SleepSession',
+            startTime: fourHoursAgo,
+            startZoneOffset: '-06:00',
+            endTime: threeHoursAgo,
+            endZoneOffset: '-06:00',
+            stages: [
+                {
+                    startTime: fourHoursAgo,
+                    endTime: threeHoursAgo,
+                    stage: 2 //STAGE_TYPE_SLEEPING
+                }
+            ]
+        }
+        const reccordSleepDeep : Record = {
+            type : 'SleepSession',
+            startTime: twoHoursAgo,
+            startZoneOffset: '-06:00',
+            endTime: currentTime,
+            endZoneOffset: '-06:00',
+            stages: [
+                {
+                    startTime: twoHoursAgo,
+                    endTime: currentTime,
+                    stage: 5 //STAGE_TYPE_REM
+                }
+            ]
+        }
+
+        const records : Record[] = [recordSleepREM, reccordSleeping, reccordSleepDeep];
+        return await HealthConnect.insertRecords({ records: records });
+    } catch (error) {
+        console.log('[HealthConnect util] Error write data SleepSession:', error);
+        throw error
+    }
+}
+
 export const checkAvailability = async (): Promise<{ availability: HealthConnectAvailabilityStatus; }> => {
     try {
         return await HealthConnect.checkAvailability();

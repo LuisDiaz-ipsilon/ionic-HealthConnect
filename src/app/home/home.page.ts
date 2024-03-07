@@ -63,6 +63,11 @@ export class HomePage {
     console.log(res.recordIds);
   }
 
+  async writeSleepSession(): Promise<void> {
+    const res = await this.healthConnectservice.writeSleepSession();
+    console.log(res.recordIds);
+  }
+
   async readRecordsSteps() : Promise<void>{
 
     const today = new Date(); // Obtener la fecha actual

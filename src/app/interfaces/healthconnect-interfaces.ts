@@ -1,5 +1,5 @@
 export type HealthConnectAvailabilityStatus = 'Available' | 'NotInstalled' | 'NotSupported' | 'Installed' | 'Unavailable';
-export type RecordType = 'Height' | 'Weight' | 'Steps' | 'BloodGlucose' | 'HeartRate';
+export type RecordType = 'Height' | 'Weight' | 'Steps' | 'BloodGlucose' | 'HeartRate' | 'SleepSession';
 type RecordBase = {
     metadata: RecordMetadata;
 };
@@ -49,7 +49,7 @@ export type Record = {
     title?: String,
     notes?: String,
     stages: Stage[],
-    samples: sample[];
+    samples?: sample[];
     count?: number,
     weight?: Mass,
     

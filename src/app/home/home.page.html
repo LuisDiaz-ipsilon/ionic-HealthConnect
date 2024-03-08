@@ -7,11 +7,10 @@
 </ion-header>
 <ion-content>
   <div class="ion-text-center vertical-center">
-    <p *ngIf="dataRes">horas dormidas del ultimo dia {{tiempoDormido}}</p>
-    <p *ngIf="dataRes">Heart Rate {{hr}}</p>
-    <p *ngIf="dataRes">Peso {{peso}}</p>
+    <p *ngIf="dataRes">Heart Rate {{hr}} bpm</p>
+    <p *ngIf="dataRes">Peso {{peso}} kg</p>
     <p *ngIf="dataRes">Pasos del dia actual {{pasos}} Inicio de caminata: {{startTime}} Final de caminata: {{endTime}}</p>
-    <p *ngIf="dataRes">Sleep total: {{totalSleep}}, Sleep REM: {{sleepREM}}, Sleep Deep: {{sleepDeep}}</p>
+    <p *ngIf="dataRes">Sleep total: {{totalSleep}}, Sleep normal: {{sleep}}, Sleep REM: {{sleepREM}}, Sleep Deep: {{sleepDeep}}</p>
     <ion-button (click)="solicitarPermiso()" color="dark">Solicitar permisos</ion-button>
     <!--ion-button (click)="cargarDatos()" color="dark">Cargar datos</ion-button-->
     <ion-button (click)="validarPermisos()" color="dark">Validar disponibilidad HC</ion-button>

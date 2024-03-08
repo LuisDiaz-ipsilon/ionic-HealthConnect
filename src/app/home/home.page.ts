@@ -16,9 +16,10 @@ export class HomePage {
   protected pasos :string = '0'
   protected startTime: string = 'sin fecha'
   protected endTime: string = 'sin fecha'
-  totalSleep: number = 0;
-  REMSleep: number = 0;
-  deepSleep: number = 0;
+  protected totalSleep: number = 0;
+  protected sleep: number = 0;
+  protected sleepREM: number = 0;
+  protected sleepDeep: number = 0;
 
   protected dataRes : boolean = false;
   protected dataResSteps : boolean = false;
@@ -124,7 +125,7 @@ export class HomePage {
       if (ultimoRegistro.weight!.value && ultimoRegistro.weight!.value !== undefined) {
         const ultimoPeso = ultimoRegistro.weight!.value;
 
-        this.peso = ultimoPeso.toString();
+        this.peso = (ultimoPeso/1000).toString();
         this.dataRes = true;
         console.log("Último peso registrado:", ultimoPeso);
       } else {
@@ -177,6 +178,35 @@ export class HomePage {
 
     const res = await this.healthConnectservice.readRecords(options)
     console.log(JSON.stringify(res));
+
+    this.sleep=0;
+    this.sleepDeep=0;
+    this.sleepREM=0;
+
+    res.records.forEach(record => {
+      if (record.type === 'SleepSession' && record.stages) {
+          record.stages.forEach(stage => {
+              const startTime = new Date(stage.startTime);
+              const endTime = new Date(stage.endTime);
+              const duration = (endTime.getTime() - startTime.getTime()) / 60000; // Convertir milisegundos a minutos
+
+              switch (stage.stage) {
+                  case 2:
+                      this.sleep += duration;
+                      break;
+                  case 5:
+                      this.sleepDeep += duration;
+                      break;
+                  case 6:
+                      this.sleepREM += duration;
+                      break;
+              }
+          });
+      }
+    });
+
+    this.totalSleep = this.sleep + this.sleepDeep + this.sleepREM;
+    this.dataRes = true;
 
   }
 

@@ -16,6 +16,9 @@ export class HomePage {
   protected pasos :string = '0'
   protected startTime: string = 'sin fecha'
   protected endTime: string = 'sin fecha'
+  totalSleep: number = 0;
+  REMSleep: number = 0;
+  deepSleep: number = 0;
 
   protected dataRes : boolean = false;
   protected dataResSteps : boolean = false;
@@ -156,6 +159,27 @@ export class HomePage {
         console.log("No hay registros de HeartRate.");
     }
   }
+
+  async readRecordsSleepSession(): Promise<void> {
+    const current = new Date();
+    const diaAnterior = new Date();
+    diaAnterior.setHours(19, 0, 0, 0);
+    diaAnterior.setDate(current.getDate() - 1); //Asi obtenermos el dia anterior a las 7 PM 
+    
+    const options : GetRecordsOptions = {
+      type: 'SleepSession',
+      timeRangeFilter: {
+        type: 'between',
+        startTime: diaAnterior, //se obtendra todos los datos de sleep desde el dia anterior a las 7PM
+        endTime: current
+      }
+    }
+
+    const res = await this.healthConnectservice.readRecords(options)
+    console.log(JSON.stringify(res));
+
+  }
+
 
   private editStringId(str: String): string {
     return str.substring(1, str.length - 1);

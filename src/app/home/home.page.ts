@@ -31,8 +31,7 @@ export class HomePage {
   async cargarDatos(){
     this.recordIdActual = this.editStringId(this.recordIdActual)  
     const res = await this.healthConnectservice.getSteps(this.recordIdActual.toString());
-    //this.pasos = (res.record.count!).toString();
-    //this.dataRes = true;
+
   }
 
   async solicitarPermiso(){
@@ -44,6 +43,7 @@ export class HomePage {
   }
 
   async checkPermissions(){
+    console.log('Revision de permisos'+JSON.stringify(await this.healthConnectservice.checkHealthPermissions()));
     console.log(await this.healthConnectservice.checkHealthPermissions());
   }
 

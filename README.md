@@ -22,6 +22,6 @@ $ npm install
 
 $ npm run build android
 
-![Android Studio Ionic Health Connect](/docs/2.png)
-![Android Studio Ionic Health Connect](/docs/3.png)
-![Android Studio Ionic Health Connect](/docs/1.png)
+![Android Studio Ionic Health Connect](/docs/2.PNG)
+![Android Studio Ionic Health Connect](/docs/3.PNG)
+![Android Studio Ionic Health Connect](/docs/1.PNG)

@@ -2,6 +2,14 @@ import { Component } from '@angular/core';
 import { HealthConnectService } from '../services/health-connect.service';
 import { GetRecordsOptions, Record, StepRecord, StoredRecord } from '../interfaces/healthconnect-interfaces';
 import { RecordType } from 'capacitor-health-connect-local';
+import { AppLauncher } from '@capacitor/app-launcher';
+
+import { App } from '@capacitor/app';
+
+App.addListener('appStateChange', ({ isActive }) => {
+  console.log('App state changed. Is active?', isActive);
+});
+
 
 @Component({
   selector: 'app-home',
@@ -28,6 +36,17 @@ export class HomePage {
 
   constructor(private healthConnectservice: HealthConnectService) {}
 
+  async launchOmronApp() {
+    try {
+
+      await AppLauncher.canOpenUrl({ url: 'jp.co.omron.healthcare.omron_connect' }); // El nombre del paquete se obtiene investigandolo desde la app OMRON connect
+      await AppLauncher.openUrl({ url: 'jp.co.omron.healthcare.omron_connect' }); 
+
+    } catch (error) {
+      console.error('No se puede abrir la aplicación Omron', error);
+    }
+  }
+  
   async cargarDatos(){
     this.recordIdActual = this.editStringId(this.recordIdActual)  
     const res = await this.healthConnectservice.getSteps(this.recordIdActual.toString());

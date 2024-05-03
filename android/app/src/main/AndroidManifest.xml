@@ -35,6 +35,14 @@
                 <category android:name="android.intent.category.HEALTH_PERMISSIONS"/>
             </intent-filter>
 
+            <!-- TODO: Add intent filter to handle permission rationale intent -->
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data android:scheme="@string/custom_url_scheme" />
+            </intent-filter>
+
         </activity>
 
         <provider
@@ -50,6 +58,7 @@
 
     <queries>
         <package android:name="com.google.android.apps.healthdata" />
+        <package android:name="jp.co.omron.healthcare.omron_connect" />
     </queries>
 
 </manifest>

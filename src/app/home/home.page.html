@@ -11,19 +11,22 @@
     <p *ngIf="dataRes">Peso {{peso}} kg</p>
     <p *ngIf="dataRes">Pasos del dia actual {{pasos}} Inicio de caminata: {{startTime}} Final de caminata: {{endTime}}</p>
     <p *ngIf="dataRes">Sleep total: {{totalSleep}}, Sleep normal: {{sleep}}, Sleep REM: {{sleepREM}}, Sleep Deep: {{sleepDeep}}</p>
+    <p *ngIf="dataRes">Presion Arterial: {{systolic}}/{{diastolic}}</p>
     <ion-button (click)="solicitarPermiso()" color="dark">Solicitar permisos</ion-button>
     <!--ion-button (click)="cargarDatos()" color="dark">Cargar datos</ion-button-->
     <ion-button (click)="validarPermisos()" color="dark">Validar disponibilidad HC</ion-button>
     <ion-button (click)="checkPermissions()" color="dark">Revisar permisos</ion-button>
     <ion-button (click)="openAppSetting()" color="dark">Open Settings</ion-button>
-    <ion-button (click)="writeStepsTest()" color="tertiary">Escribrir pasos</ion-button>
+    <ion-button (click)="writeStepsTest()" color="tertiary">Escribrir pasoss</ion-button>
     <ion-button (click)="writeWeight()" color="tertiary">Escribir peso</ion-button>
     <ion-button (click)="writeHeartRate()" color="tertiary">Escribir Heart Rate</ion-button>
     <ion-button (click)="writeSleepSession()" color="tertiary">Escribir Sleep Session</ion-button>
+    <ion-button (click)="writeBloodPressure()" color="tertiary">Escribir Presion Arterial</ion-button>
     <ion-button (click)="readRecordsSteps()" color="warning">Obtener datos pasos</ion-button>
     <ion-button (click)="readRecordsWeight()" color="warning">Obtener datos peso</ion-button>
     <ion-button (click)="readRecordsHeartRate()" color="warning">Obtener datos Frecuencia Cardiaca</ion-button>
     <ion-button (click)="readRecordsSleepSession()" color="warning">Obtener datos Sleep Session</ion-button>
+    <ion-button (click)="readRecordsBloodPressure()" color="warning">Obtener datos Presion Arterial</ion-button>
     <!-- Botón para ejecutar abrir OMRON -->
     <ion-button (click)="launchOmronApp()" color="success">Abrir OMRON</ion-button>
 

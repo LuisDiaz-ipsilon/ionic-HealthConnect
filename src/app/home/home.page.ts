@@ -28,6 +28,8 @@ export class HomePage {
   protected sleep: number = 0;
   protected sleepREM: number = 0;
   protected sleepDeep: number = 0;
+  protected systolic: number = 0;
+  protected diastolic: number = 0;
 
   protected dataRes : boolean = false;
   protected dataResSteps : boolean = false;
@@ -88,6 +90,11 @@ export class HomePage {
 
   async writeSleepSession(): Promise<void> {
     const res = await this.healthConnectservice.writeSleepSession();
+    console.log(res.recordIds);
+  }
+
+  async writeBloodPressure(): Promise<void> {
+    const res = await this.healthConnectservice.writeBloodPressure();
     console.log(res.recordIds);
   }
 
@@ -228,6 +235,40 @@ export class HomePage {
     this.dataRes = true;
 
   }
+
+  async readRecordsBloodPressure(): Promise<void> {
+    try {
+        const current = new Date();
+        const startTime6months = new Date(current);
+        startTime6months.setMonth(startTime6months.getMonth() - 6);
+        
+        const options: GetRecordsOptions = {
+            type: 'BloodPressure' as RecordType, // Suprime el warning si es necesario
+            timeRangeFilter: {
+                type: 'between',
+                startTime: startTime6months, // Se obtendrán todos los datos de presión arterial desde los últimos 6 meses
+                endTime: current
+            }
+        };
+
+        const res = await this.healthConnectservice.readRecords(options);
+        console.log(JSON.stringify(res));
+
+        if (res && res.records && res.records.length > 0) {
+            const ultimoRegistro = res.records[res.records.length - 1] as Record;
+
+            this.systolic = ultimoRegistro.systolic!.value;
+            this.diastolic = ultimoRegistro.diastolic!.value;
+            this.dataRes = true;
+        } else {
+            console.log("No hay registros de BloodPressure.");
+        }
+    } catch (error) {
+        console.log('[HealthConnect util] Error reading blood pressure data:', error);
+        throw error;
+    }
+};
+
 
 
   private editStringId(str: String): string {

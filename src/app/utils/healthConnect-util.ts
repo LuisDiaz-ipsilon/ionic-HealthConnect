@@ -1,14 +1,16 @@
 import { HealthConnect, Mass, Record } from 'capacitor-health-connect-local';
-import { StoredRecord, RecordType, HealthConnectAvailabilityStatus, GetRecordsOptions, sample} from '../interfaces/healthconnect-interfaces';
+import { StoredRecord, RecordType, HealthConnectAvailabilityStatus, GetRecordsOptions, sample, Pressure} from '../interfaces/healthconnect-interfaces';
 
 const recordTypeSteps: RecordType = "Steps";
-const readPermissions: RecordType[] = ["Weight", "Steps"];
-const writePermissions: RecordType[] = ["Weight", "Steps"];
+const readPermissions: RecordType[] = ["Weight", "Steps", "BloodPressure"];
+const writePermissions: RecordType[] = ["Weight", "Steps", "BloodPressure"];
 
 
 export const requestPermissions = async (): Promise<{ grantedPermissions: string[]; hasAllPermissions: boolean; }> => {
     //const PERMISSIONS = ["Height", "Weight", "Steps", "BloodGlucose"]
     try {
+        console.log('permisos')
+        console.log(readPermissions);
         return await HealthConnect.requestHealthPermissions({
             read: readPermissions,
             write: writePermissions
@@ -34,6 +36,42 @@ export const getSteps = async (recordId: string): Promise<{ record: StoredRecord
         throw error
     }
 }
+
+export const writeBloodPressure = async (): Promise<{ recordIds: string[] }> => {
+    try {
+        // Current time
+        const currentTime = new Date();
+
+        const systolicPressure: Pressure = {
+            unit: 'millimetersOfMercury',
+            value: 120 // Example systolic pressure value
+        };
+
+        const diastolicPressure: Pressure = {
+            unit: 'millimetersOfMercury',
+            value: 80 // Example diastolic pressure value
+        };
+
+        // Blood pressure record details
+        const record: Record = {
+            type: 'BloodPressure',
+            time: currentTime,
+            zoneOffset: '-06:00',
+            systolic: systolicPressure, 
+            diastolic: diastolicPressure, 
+            bodyPosition: 'sitting_down',
+            measurementLocation: 'left_upper_arm'
+        }
+
+        // Insert the record into HealthConnect
+        const records: Record[] = [record];
+        return await HealthConnect.insertRecords({ records: records });
+    } catch (error) {
+        console.log('[HealthConnect util] Error write blood pressure data:', error);
+        throw error;
+    }
+}
+
 
 export const writeSteps = async (): Promise<{ recordIds: string[] }> => {
     try {

@@ -1,6 +1,6 @@
 # Ionic Health Connect
 
-Esta app en ionic capacitor toma el plugin de [capacitor-healthconnect](https://github.com/LuisDiaz-ipsilon/capacitor-health-connect) desarollado por [ubie-oss](https://github.com/ubie-oss/capacitor-health-connect) y modificado por LuisDiaz-ipsilon
+Esta app en ionic capacitor toma el plugin de [capacitor-healthconnect](https://github.com/LuisDiaz-ipsilon/capacitor-health-connect) desarollado por [ubie-oss](https://github.com/ubie-oss/capacitor-health-connect) y __LuisDiaz-ipsilon__
 
 ## Importante
 
